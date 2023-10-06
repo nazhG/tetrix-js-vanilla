@@ -6,11 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tetrix</title>
     <style>
-      :root{font-family:Inter,system-ui,Avenir,Helvetica,Arial,sans-serif;line-height:1.5;font-weight:400;color-scheme:dark;color:#ffffffde;background-color:#242424;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-text-size-adjust:100%}body{margin:0;padding:0;display:grid;place-items:center;min-height:280px;height:100vh}#showMore{display:flex;justify-content:space-between;align-items:center;width:280px}#moreInfo{font-weight:700;border:1px solid #000;padding:.5rem;border-radius:.5rem;cursor:pointer}
+      :root{font-family:Inter,system-ui,Avenir,Helvetica,Arial,sans-serif;line-height:1.5;font-weight:400;color-scheme:dark;color:#ffffffde;background-color:#242424;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-text-size-adjust:100%}body{margin:0;padding:0;display:grid;place-items:center;min-height:280px;height:100vh}#showMore{display:flex;justify-content:space-between;align-items:center;width:280px}#moreInfo{font-weight:700;border:1px solid #000;padding:.5rem;border-radius:.5rem;cursor:pointer}#controls{display:flex;justify-content:space-between;align-items:center;width:280px}
     </style>
   </head>
   <body>
     <canvas></canvas>
+    <div id="controls">
+      <button id="left">Left</button>
+      <button id="right">Right</button>
+      <button id="down">Down</button>
+      <button id="rotate">Rotate</button>
+    </div>
     <div id="showMore">
       <p>Score:&nbsp;<span id="score"></span></p>
       <p id="moreInfo">?</p>
@@ -26,7 +32,7 @@
       <a href="https://github.com/nazhG/tetrix-js-vanilla">See Code</a>
     </div>
     <script>
-      (function(){const i=document.createElement("link").relList;if(i&&i.supports&&i.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))s(t);new MutationObserver(t=>{for(const r of t)if(r.type==="childList")for(const m of r.addedNodes)m.tagName==="LINK"&&m.rel==="modulepreload"&&s(m)}).observe(document,{childList:!0,subtree:!0});function o(t){const r={};return t.integrity&&(r.integrity=t.integrity),t.referrerPolicy&&(r.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?r.credentials="include":t.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function s(t){if(t.ep)return;t.ep=!0;const r=o(t);fetch(t.href,r)}})();const f=document.querySelector("canvas"),l=f.getContext("2d"),O=document.querySelector("#score");let p=0;const P=e=>{p=e,O.innerHTML=p};P(p);const u=20,n=14,d=30;f.width=u*n;f.height=u*d;l.scale(u,u);const h=[];for(let e=0;e<d;e++){h[e]=[];for(let i=0;i<n;i++)h[e][i]=0}const a=["black","red","green","blue","yellow","cyan","magenta"],g=[[[1,1],[1,1]],[[1,1,1,1]],[[1,1,0],[0,1,1]],[[0,1,1],[1,1,0]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]],[[0,1,0],[1,1,1]]];let w=!1;const E=()=>{w||(w=!0,window.alert(`Game Over! Your score is ${p}`),window.location.reload())},v={x:1,y:0},A={x:-1,y:0},R={x:0,y:1},c={pos:{x:0,y:0},piece:null,moverDown(){if(this.pos.y+this.getPiece().height>=d||this.colide(h,R)){this.merge(h),this.reset();return}this.pos.y++},moverLeft(){this.pos.x!==0&&(this.colide(h,A)||this.pos.x--)},moverRight(){this.pos.x+this.getPiece().width>=n||this.colide(h,v)||this.pos.x++},rotate(){const e=this.getPiece(),i=e.width,o=e.height;this.pos.x+e.height>=n&&(this.pos.x=n-e.height);const s=[];for(let t=0;t<i;t++)s.push([]);for(let t=0;t<o;t++)for(let r=0;r<i;r++)s[r].unshift(e[t][r]);this.setPiece(s)},reset(){this.pos.y=0,this.pos.x=0,this.piece=null},colide(e,i){const o=this.getPiece();for(let s=0;s<this.piece.width;s++)for(let t=0;t<this.piece.height;t++)if(o[t][s]!==0&&e[this.pos.y+t+i.y][this.pos.x+s+i.x]!==0)return!0;return!1},merge(e){this.getPiece().forEach((o,s)=>{o.forEach((t,r)=>{t!==0&&(e[s+this.pos.y][r+this.pos.x]=t)})});let i=0;for(let o=0;o<d;o++){let s=!0;for(let t=0;t<n;t++)if(e[o][t]===0){s=!1;break}s&&(e.splice(o,1),e.unshift(new Array(n).fill(0)),i++)}for(let o=0;o<n;o++)e[2][o]!==0&&E();i>0&&P(p+i*i*10)},setPiece(e,i){this.piece=e,i!==void 0&&(this.piece=this.piece.map(o=>o.map(s=>s===0?0:i))),this.piece.width=this.piece[0].length,this.piece.height=this.piece.length},getPiece(){return this.piece?this.piece:[]}};let y=0,x=0;const L=(e=0)=>{if(c.piece===null){const o=Math.floor(Math.random()*g.length),s=Math.floor(Math.random()*(a.length-1)+1);c.setPiece(g[o],s)}const i=e-x;x=e,y+=i,y>1e3&&(c.moverDown(),y=0),D(),window.requestAnimationFrame(L)},D=()=>{l.fillStyle=a[0],l.fillRect(0,0,f.width,f.height),h.forEach((e,i)=>{e.forEach((o,s)=>{o!==0&&(l.fillStyle=a[o],l.fillRect(s,i,1,1))})}),c.getPiece().forEach((e,i)=>{e.forEach((o,s)=>{o!==0&&(l.fillStyle=a[o],l.fillRect(c.pos.x+s,c.pos.y+i,1,1))})})};document.addEventListener("keydown",e=>{e.key==="ArrowLeft"&&c.moverLeft(),e.key==="ArrowRight"&&c.moverRight(),e.key==="ArrowDown"&&c.moverDown(),e.key==="ArrowUp"&&c.rotate()});L();
+      (function(){const o=document.createElement("link").relList;if(o&&o.supports&&o.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))r(t);new MutationObserver(t=>{for(const s of t)if(s.type==="childList")for(const m of s.addedNodes)m.tagName==="LINK"&&m.rel==="modulepreload"&&r(m)}).observe(document,{childList:!0,subtree:!0});function i(t){const s={};return t.integrity&&(s.integrity=t.integrity),t.referrerPolicy&&(s.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?s.credentials="include":t.crossOrigin==="anonymous"?s.credentials="omit":s.credentials="same-origin",s}function r(t){if(t.ep)return;t.ep=!0;const s=i(t);fetch(t.href,s)}})();const f=document.querySelector("canvas"),l=f.getContext("2d"),O=document.querySelector("#score");let p=0;const P=e=>{p=e,O.innerHTML=p};P(p);const u=20,n=14,d=24;f.width=u*n;f.height=u*d;l.scale(u,u);const h=[];for(let e=0;e<d;e++){h[e]=[];for(let o=0;o<n;o++)h[e][o]=0}const a=["black","red","green","blue","yellow","cyan","magenta"],g=[[[1,1],[1,1]],[[1,1,1,1]],[[1,1,0],[0,1,1]],[[0,1,1],[1,1,0]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]],[[0,1,0],[1,1,1]]];let w=!1;const E=()=>{w||(w=!0,window.alert(`Game Over! Your score is ${p}`),window.location.reload())},v={x:1,y:0},A={x:-1,y:0},R={x:0,y:1},c={pos:{x:0,y:0},piece:null,moverDown(){if(this.pos.y+this.getPiece().height>=d||this.colide(h,R)){this.merge(h),this.reset();return}this.pos.y++},moverLeft(){this.pos.x!==0&&(this.colide(h,A)||this.pos.x--)},moverRight(){this.pos.x+this.getPiece().width>=n||this.colide(h,v)||this.pos.x++},rotate(){const e=this.getPiece(),o=e.width,i=e.height;this.pos.x+e.height>=n&&(this.pos.x=n-e.height);const r=[];for(let t=0;t<o;t++)r.push([]);for(let t=0;t<i;t++)for(let s=0;s<o;s++)r[s].unshift(e[t][s]);this.setPiece(r)},reset(){this.pos.y=0,this.pos.x=0,this.piece=null},colide(e,o){const i=this.getPiece();for(let r=0;r<i.width;r++)for(let t=0;t<i.height;t++)if(i[t][r]!==0&&e[this.pos.y+t+o.y][this.pos.x+r+o.x]!==0)return!0;return!1},merge(e){this.getPiece().forEach((i,r)=>{i.forEach((t,s)=>{t!==0&&(e[r+this.pos.y][s+this.pos.x]=t)})});let o=0;for(let i=0;i<d;i++){let r=!0;for(let t=0;t<n;t++)if(e[i][t]===0){r=!1;break}r&&(e.splice(i,1),e.unshift(new Array(n).fill(0)),o++)}for(let i=0;i<n;i++)e[2][i]!==0&&E();o>0&&P(p+o*o*10)},setPiece(e,o){this.piece=e,o!==void 0&&(this.piece=this.piece.map(i=>i.map(r=>r===0?0:o))),this.piece.width=this.piece[0].length,this.piece.height=this.piece.length},getPiece(){return this.piece?this.piece:[]}};let y=0,x=0;const L=(e=0)=>{if(c.piece===null){const i=Math.floor(Math.random()*g.length),r=Math.floor(Math.random()*(a.length-1)+1);c.setPiece(g[i],r)}const o=e-x;x=e,y+=o,y>1e3&&(c.moverDown(),y=0),D(),window.requestAnimationFrame(L)},D=()=>{l.fillStyle=a[0],l.fillRect(0,0,f.width,f.height),h.forEach((e,o)=>{e.forEach((i,r)=>{i!==0&&(l.fillStyle=a[i],l.fillRect(r,o,1,1))})}),c.getPiece().forEach((e,o)=>{e.forEach((i,r)=>{i!==0&&(l.fillStyle=a[i],l.fillRect(c.pos.x+r,c.pos.y+o,1,1))})})};document.addEventListener("keydown",e=>{e.key==="ArrowLeft"&&c.moverLeft(),e.key==="ArrowRight"&&c.moverRight(),e.key==="ArrowDown"&&c.moverDown(),e.key==="ArrowUp"&&c.rotate()});L();
     </script>
     <script>
       document.querySelector("#moreInfo").addEventListener("click", () => {
@@ -38,6 +44,34 @@
           document.querySelector("#info").style.display = "none";
           document.querySelector("#moreInfo").innerHTML = "?";
         }
+      });
+      // Controls
+      let downInterval;
+      document.querySelector("#left").addEventListener("click", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+      });
+      document.querySelector("#right").addEventListener("click", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+      });
+      document.querySelector("#down").addEventListener("mousedown", () => {
+        downInterval = setInterval(() => {
+          document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+        }, 50);
+      });
+      document.querySelector("#down").addEventListener("mouseup", () => {
+        clearInterval(downInterval);
+      });
+      document.querySelector("#rotate").addEventListener("click", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+      });
+      // Mobile controls (touch)
+      document.querySelector("#down").addEventListener("touchstart", () => {
+        downInterval = setInterval(() => {
+          document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+        }, 50);
+      });
+      document.querySelector("#down").addEventListener("touchend", () => {
+        clearInterval(downInterval);
       });
     </script>
   </body>

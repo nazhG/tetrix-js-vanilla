@@ -18,7 +18,7 @@ const BLOCK_SIZE = 20
 
 // Board size
 const BOARD_WIDTH = 14
-const BOARD_HEIGHT = 30
+const BOARD_HEIGHT = 24
 
 // Set canvas size
 canvas.width = BLOCK_SIZE * BOARD_WIDTH
@@ -136,8 +136,8 @@ const player = {
   },
   colide (board, dir) {
     const p = this.getPiece()
-    for (let i = 0; i < this.piece.width; i++) {
-      for (let j = 0; j < this.piece.height; j++) {
+    for (let i = 0; i < p.width; i++) {
+      for (let j = 0; j < p.height; j++) {
         if (p[j][i] !== 0 && board[this.pos.y + j + dir.y][this.pos.x + i + dir.x] !== 0) {
           return true
         }

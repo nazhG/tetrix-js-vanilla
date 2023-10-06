@@ -8,6 +8,12 @@
   </head>
   <body>
     <canvas></canvas>
+    <div id="controls">
+      <button id="left">Left</button>
+      <button id="right">Right</button>
+      <button id="down">Down</button>
+      <button id="rotate">Rotate</button>
+    </div>
     <div id="showMore">
       <p>Score:&nbsp;<span id="score"></span></p>
       <p id="moreInfo">?</p>
@@ -33,6 +39,34 @@
           document.querySelector("#info").style.display = "none";
           document.querySelector("#moreInfo").innerHTML = "?";
         }
+      });
+      // Controls
+      let downInterval;
+      document.querySelector("#left").addEventListener("click", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+      });
+      document.querySelector("#right").addEventListener("click", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+      });
+      document.querySelector("#down").addEventListener("mousedown", () => {
+        downInterval = setInterval(() => {
+          document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+        }, 50);
+      });
+      document.querySelector("#down").addEventListener("mouseup", () => {
+        clearInterval(downInterval);
+      });
+      document.querySelector("#rotate").addEventListener("click", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+      });
+      // Mobile controls (touch)
+      document.querySelector("#down").addEventListener("touchstart", () => {
+        downInterval = setInterval(() => {
+          document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+        }, 50);
+      });
+      document.querySelector("#down").addEventListener("touchend", () => {
+        clearInterval(downInterval);
       });
     </script>
   </body>

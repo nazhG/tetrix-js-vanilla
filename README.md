@@ -11,4 +11,3 @@ pnpm run dev
 
 * add some music & sound effects
 * share the game on social media
-* mobile version

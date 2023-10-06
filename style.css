@@ -30,10 +30,18 @@ body {
   align-items: center;
   width: 280px;
 }
+
 #moreInfo {
   font-weight: bold;
   border: 1px solid #000;
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
+}
+
+#controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 280px;
 }
