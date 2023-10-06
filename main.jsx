@@ -75,6 +75,14 @@ const pieces = [
   ]
 ]
 
+let isGameOver = false
+const gameOver = () => {
+  if (isGameOver) return
+  isGameOver = true
+  window.alert(`Game Over! Your score is ${score}`)
+  window.location.reload()
+}
+
 const RIGHT = { x: 1, y: 0 }
 const LEFT = { x: -1, y: 0 }
 const DOWN = { x: 0, y: 1 }
@@ -162,6 +170,12 @@ const player = {
         board.unshift(new Array(BOARD_WIDTH).fill(0))
         // increment number of complete lines
         numCompleteLines++
+      }
+    }
+    // check if have a complete column (game over)
+    for (let x = 0; x < BOARD_WIDTH; x++) {
+      if (board[2][x] !== 0) {
+        gameOver()
       }
     }
     // calculate score

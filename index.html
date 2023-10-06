@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tetrix</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id="showMore">
+      <p>Score:&nbsp;<span id="score"></span></p>
+      <p id="moreInfo">?</p>
+    </div>
+    <div id="info" style="display: none;">
+      <p>Instructions: 
+        <ul>
+          <li>Use &larr; &darr; &rarr; to move</li>
+          <li>Use &uarr; to rotate</li>
+          <li>1 line = 10 points, 2 lines = 40 points, 3 lines = 90 points, 4 lines = 160 points</li>
+        </ul>
+      </p>
+      <a href="https://github.com/nazhG/tetrix-js-vanilla">See Code</a>
+    </div>
+    <script type="module" src="/main.jsx"></script>
+    <script>
+      document.querySelector("#moreInfo").addEventListener("click", () => {
+        // toggle info
+        if (document.querySelector("#info").style.display === "none") {
+          document.querySelector("#info").style.display = "block";
+          document.querySelector("#moreInfo").innerHTML = "&#10005;";
+        } else {
+          document.querySelector("#info").style.display = "none";
+          document.querySelector("#moreInfo").innerHTML = "?";
+        }
+      });
+    </script>
+  </body>
+</html>

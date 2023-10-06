@@ -6,3 +6,8 @@
 pnpm install
 pnpm run dev
 ```
+
+### TODO
+
+* add some music & sound effects
+* share the game on social media
